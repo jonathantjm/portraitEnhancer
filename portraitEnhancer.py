@@ -1,7 +1,8 @@
 import cv2
 import sys
 import skimage
-from skimage import io, filters
+import numpy as np
+from filters import face_filter, whiten_teeth
 
 def main (argV = None):
 	# Get user supplied values
@@ -84,22 +85,22 @@ def main (argV = None):
 			smile_w = w
 			smile_h = h
 
-
-	#print("Smile Scale Factor = {0}".format(sF))
-
-	# Draw a rectangle around the face
 	
-	cv2.rectangle(image, (face_x, face_y), (face_x+face_w,face_y+face_h), (0, 255, 0), 2)
+	onlyFaceFilter = np.copy(image)
+	cv2.imshow("Before", image)
+	whiten_teeth_image = whiten_teeth(image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)])
 	
-	# Draw rectangle around smile
+	image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)] = cv2.addWeighted(image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)], 0.5, whiten_teeth_image, 0.5, 0)
+	cv2.imshow("Only Teeth Whitening", image)
+	#cv2.imshow("Teeth Whitening", whiten_teeth_image)
+	#cv2.imshow("Whitened Teeth", whiten_teeth_image)	
+	image = face_filter(image)
+	onlyFaceFilter = face_filter(onlyFaceFilter)
 
-	if len(smiles) == 0:
-		print ("Sorry! No smile could be detected")
-	else:
-		cv2.rectangle(image, (smile_x, smile_y), (smile_x+smile_w, smile_y+smile_h), (0, 0, 255), 2)
-
-	cv2.imshow("Faces found", image)
+	cv2.imshow("Only Face Filter", onlyFaceFilter)
+	cv2.imshow("Teeth Whitening + Face Filter", image)
 	cv2.waitKey(0)
+
 
 
 

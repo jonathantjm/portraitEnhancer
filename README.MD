@@ -13,3 +13,8 @@
 
 ##How to run
 In cmd, just run '<python portraitEnhancer.py $$$>', where $$$ is the name of the picture. I've included a few jpegs in the root folder
+After running, four images will pop up:
+1. Original Image
+1. Image with teeth whitening
+1. Image with face filter
+1. Image with teeth whitening + face filter
