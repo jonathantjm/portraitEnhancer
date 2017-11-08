@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Portrait Enhancer</title>
+</head>
+<body>
+<style>
+	h1 {
+    	text-align: center;
+	}
+	p {
+		text-align: center;
+	}
+	form {
+		text-align: center;
+	}
+</style>
+<h1>Portrait Enhancer</h1>
+<p>Upload your picture to brighten your smile!</p><br>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+	Select image to upload:
+	<input type="file" name="fileToUpload" id="fileToUpload">
+	<p></p>
+	<input type="submit" value="Upload Image" name="submit">
+</form>
+</body>
+</html>
