@@ -1,4 +1,4 @@
-import cv2
+import cv2	
 import sys
 import skimage
 import numpy as np
@@ -7,6 +7,10 @@ from filters import face_filter, whiten_teeth
 def main (argV = None):
 	# Get user supplied values
 	imagePath = sys.argv[1]
+	faceFilterFactor = sys.argv[2];
+	whiteningFactor = sys.argv[3];
+	whiteningFactor = float(whiteningFactor)/100
+	faceFilterFactor = float(faceFilterFactor)/100
 	faceCascPath = "haarcascade_frontalface_default.xml"
 	smileCascPath = "haarcascade_smile.xml"
 
@@ -23,6 +27,7 @@ def main (argV = None):
 	smile_y = 0
 	smile_w = 0
 	smile_h = 0	
+
 	face_x = 0
 	face_y = 0
 	face_w = 0
@@ -84,21 +89,23 @@ def main (argV = None):
 			smile_y = y
 			smile_w = w
 			smile_h = h
-
 	
 	onlyFaceFilter = np.copy(image)
-	cv2.imshow("Before", image)
-	whiten_teeth_image = whiten_teeth(image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)])
+	#cv2.imshow("Before", image)
+	whiten_teeth_image = whiten_teeth(image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)], whiteningFactor)
 	
 	image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)] = cv2.addWeighted(image[smile_y:(smile_y+smile_h), smile_x:(smile_x+smile_w)], 0.5, whiten_teeth_image, 0.5, 0)
-	cv2.imshow("Only Teeth Whitening", image)
-	#cv2.imshow("Teeth Whitening", whiten_teeth_image)
-	#cv2.imshow("Whitened Teeth", whiten_teeth_image)	
-	image = face_filter(image)
+	#cv2.imshow("Only Teeth Whitening", image)
+	cv2.imwrite('./outImages/teeth_whitening_only.jpg', image)
+	
 	onlyFaceFilter = face_filter(onlyFaceFilter)
+	#cv2.imshow("Only Face Filter", onlyFaceFilter)
+	cv2.imwrite('./outImages/face_filter_only.jpg', onlyFaceFilter)
 
-	cv2.imshow("Only Face Filter", onlyFaceFilter)
-	cv2.imshow("Teeth Whitening + Face Filter", image)
+	image = cv2.addWeighted(image, (1-faceFilterFactor), onlyFaceFilter, faceFilterFactor, 0)
+	#cv2.imshow("Teeth Whitening + Face Filter", image)
+	cv2.imwrite('./outImages/teeth_whitening_and_face_filter.jpg', image)
+
 	cv2.waitKey(0)
 
 

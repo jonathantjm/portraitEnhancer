@@ -12,10 +12,9 @@
 	1. If you're using Anaconda and created a separate environment, in step 6, you would copy it to `...Anaconda3/envs/py27/Lib`
 
 ## How to run
-In cmd, just run `python portraitEnhancer.py $$$`, where $$$ is the name of the picture. I've included a few jpegs in the root folder
+In cmd, just run `python portraitEnhancer.py $$$ xx yy`, where $$$ is the name of the picture, xx is a number from 0-100 representing the intensity of **Face Filter** and yy is a number from 0-100 representing the intensity of **Teeth Whitening**
 
-After running, four images will pop up:
-1. Original Image
+After running, three images will be written to outImages folder:
 1. Image with teeth whitening
 1. Image with face filter
 1. Image with teeth whitening + face filter

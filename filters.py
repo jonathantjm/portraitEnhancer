@@ -19,12 +19,19 @@ def face_filter(original_image):
             0.392, 0.42, 0.439, 0.475, 0.561,
             0.58, 0.627, 0.671, 0.733, 0.847,
             0.925, 1])
+    
+    image = skimage.img_as_ubyte(image)
+
     return image
 
-def whiten_teeth (image):
-    
-    boundaries = [([150,170,170],[213,226,222])]
+def whiten_teeth (image, whiteningFactor):
+    boundaries = [
+    ([150,170,170],[213,226,222])
+    ]
+
+
     for lower, upper in boundaries:
+
         lower = np.array(lower, dtype = "uint8")
         upper = np.array(upper, dtype = "uint8")
 
@@ -36,8 +43,8 @@ def whiten_teeth (image):
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         b,g,r = cv2.split(mask)
         mask = cv2.merge((b,g,r,alpha_channel))
-        alpha = 0.80
-        
+        alpha = 1 - whiteningFactor
+
         image [:,:,0] = (image [:,:,0] * alpha) + (mask[:,:,0]*(1 - alpha)*mask[:,:,3]) + (image [:,:,0] * (1-alpha)) - (image [:,:,0] * (1-alpha) * mask[:,:,3])
         image [:,:,1] = (image [:,:,1] * alpha) + (mask[:,:,1]*(1 - alpha)*mask[:,:,3]) + (image [:,:,1] * (1-alpha)) - (image [:,:,1] * (1-alpha) * mask[:,:,3])
         image [:,:,2] = (image [:,:,2] * alpha) + (mask[:,:,2]*(1 - alpha)*mask[:,:,3]) + (image [:,:,2] * (1-alpha)) - (image [:,:,2] * (1-alpha) * mask[:,:,3])
