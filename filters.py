@@ -2,6 +2,7 @@ import skimage
 import cv2
 import numpy as np
 from skimage import io, filters
+from PIL import ImageEnhance
 
 
 def face_filter(original_image):
@@ -24,10 +25,10 @@ def face_filter(original_image):
     return image
 
 def whiten_teeth (image, whiteningFactor):
-
     boundaries = [
-    ([122,146,164],[214,245,255])    
+    ([150,170,170],[213,226,222])
     ]
+
 
     for lower, upper in boundaries:
 
@@ -38,9 +39,7 @@ def whiten_teeth (image, whiteningFactor):
         alpha_channel = np.copy(mask)
         alpha_channel [alpha_channel == 255] = 1
 
-        mask = cv2.bilateralFilter(mask, 15, 150, 150)
-        #cv2.imshow("Mask", mask)
-        #cv2.waitKey(0)
+        mask = cv2.bilateralFilter(mask, 15, 75, 75)
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         b,g,r = cv2.split(mask)
         mask = cv2.merge((b,g,r,alpha_channel))
@@ -50,11 +49,7 @@ def whiten_teeth (image, whiteningFactor):
         image [:,:,1] = (image [:,:,1] * alpha) + (mask[:,:,1]*(1 - alpha)*mask[:,:,3]) + (image [:,:,1] * (1-alpha)) - (image [:,:,1] * (1-alpha) * mask[:,:,3])
         image [:,:,2] = (image [:,:,2] * alpha) + (mask[:,:,2]*(1 - alpha)*mask[:,:,3]) + (image [:,:,2] * (1-alpha)) - (image [:,:,2] * (1-alpha) * mask[:,:,3])
         
-    alpha_channel = cv2.inRange(image, (0,0,0), (0,0,0))
-    alpha_channel [alpha_channel == 0] = 1
-    alpha_channel [alpha_channel == 255] = 0
-    b,g,r = cv2.split(image)
-    image = cv2.merge((b,g,r,alpha_channel))    
+
     return image
 
 def midtone_filter(image, channels, values):
