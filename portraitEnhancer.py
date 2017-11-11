@@ -53,9 +53,9 @@ def main (argV = None):
 		whiten_teeth_image = whiten_teeth(overlay, whiteningFactor)
 
 		#Add image based on weight
-		image [:,:,0] = (image [:,:,0] * 0.5) + (whiten_teeth_image[:,:,0]* 0.5 *whiten_teeth_image[:,:,3]) + (image [:,:,0] * 0.5) - (image [:,:,0] * 0.5 * whiten_teeth_image[:,:,3])
-		image [:,:,1] = (image [:,:,1] * 0.5) + (whiten_teeth_image[:,:,1]* 0.5 *whiten_teeth_image[:,:,3]) + (image [:,:,1] * 0.5) - (image [:,:,1] * 0.5 * whiten_teeth_image[:,:,3])
-		image [:,:,2] = (image [:,:,2] * 0.5) + (whiten_teeth_image[:,:,2]* 0.5 *whiten_teeth_image[:,:,3]) + (image [:,:,2] * 0.5) - (image [:,:,2] * 0.5 * whiten_teeth_image[:,:,3])
+		image [:,:,0] = (image [:,:,0] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,0]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,0] * whiteningFactor) - (image [:,:,0] * whiteningFactor * whiten_teeth_image[:,:,3])
+		image [:,:,1] = (image [:,:,1] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,1]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,1] * whiteningFactor) - (image [:,:,1] * whiteningFactor * whiten_teeth_image[:,:,3])
+		image [:,:,2] = (image [:,:,2] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,2]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,2] * whiteningFactor) - (image [:,:,2] * whiteningFactor * whiten_teeth_image[:,:,3])
 	
 	#Write image
 	cv2.imwrite('./outImages/teeth_whitening_only.jpg', image)

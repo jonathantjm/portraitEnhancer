@@ -50,19 +50,9 @@ def whiten_teeth (image, whiteningFactor):
         b,g,r = cv2.split(mask)
         mask = cv2.merge((b,g,r,alpha_channel))
         alpha = 1 - whiteningFactor
-
-        #Blend mask and original image based on weights and alpha channel
-        image [:,:,0] = (image [:,:,0] * alpha) + (mask[:,:,0]*(1 - alpha)*mask[:,:,3]) + (image [:,:,0] * (1-alpha)) - (image [:,:,0] * (1-alpha) * mask[:,:,3])
-        image [:,:,1] = (image [:,:,1] * alpha) + (mask[:,:,1]*(1 - alpha)*mask[:,:,3]) + (image [:,:,1] * (1-alpha)) - (image [:,:,1] * (1-alpha) * mask[:,:,3])
-        image [:,:,2] = (image [:,:,2] * alpha) + (mask[:,:,2]*(1 - alpha)*mask[:,:,3]) + (image [:,:,2] * (1-alpha)) - (image [:,:,2] * (1-alpha) * mask[:,:,3])
         
-    #Create alpha channel and merge with image
-    alpha_channel = cv2.inRange(image, (0,0,0), (0,0,0))
-    alpha_channel [alpha_channel == 0] = 1
-    alpha_channel [alpha_channel == 255] = 0
-    b,g,r = cv2.split(image)
-    image = cv2.merge((b,g,r,alpha_channel))    
-    return image
+    
+    return mask
 
 def midtone_filter(image, channels, values):
     """ Tone and color correction. Use linear interplotation
