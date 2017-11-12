@@ -50,12 +50,12 @@ def main (argV = None):
 		overlay = cv2.bitwise_and(overlay, image)
 
 		#Whiten teeth
-		whiten_teeth_image = whiten_teeth(overlay, whiteningFactor)
+		teeth_mask = whiten_teeth(overlay, whiteningFactor)
 
 		#Add image based on weight
-		image [:,:,0] = (image [:,:,0] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,0]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,0] * whiteningFactor) - (image [:,:,0] * whiteningFactor * whiten_teeth_image[:,:,3])
-		image [:,:,1] = (image [:,:,1] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,1]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,1] * whiteningFactor) - (image [:,:,1] * whiteningFactor * whiten_teeth_image[:,:,3])
-		image [:,:,2] = (image [:,:,2] * (1 - whiteningFactor)) + (whiten_teeth_image[:,:,2]* whiteningFactor *whiten_teeth_image[:,:,3]) + (image [:,:,2] * whiteningFactor) - (image [:,:,2] * whiteningFactor * whiten_teeth_image[:,:,3])
+		image [:,:,0] = (image [:,:,0] * (1 - whiteningFactor)) + (teeth_mask[:,:,0]* whiteningFactor *teeth_mask[:,:,3]) + (image [:,:,0] * whiteningFactor) - (image [:,:,0] * whiteningFactor * teeth_mask[:,:,3])
+		image [:,:,1] = (image [:,:,1] * (1 - whiteningFactor)) + (teeth_mask[:,:,1]* whiteningFactor *teeth_mask[:,:,3]) + (image [:,:,1] * whiteningFactor) - (image [:,:,1] * whiteningFactor * teeth_mask[:,:,3])
+		image [:,:,2] = (image [:,:,2] * (1 - whiteningFactor)) + (teeth_mask[:,:,2]* whiteningFactor *teeth_mask[:,:,3]) + (image [:,:,2] * whiteningFactor) - (image [:,:,2] * whiteningFactor * teeth_mask[:,:,3])
 	
 	#Write image
 	cv2.imwrite('./outImages/teeth_whitening_only.jpg', image)
@@ -71,7 +71,9 @@ def main (argV = None):
 	cv2.imwrite('./outImages/face_filter_only.jpg', onlyFaceFilter)
 
 	#Add image based on weight (Face filter + teeth whitening)
-	image = cv2.addWeighted(image, (1-faceFilterFactor), onlyFaceFilter, faceFilterFactor, 0)
+	teeth_whitened = np.copy(image)
+	image = face_filter(image)
+	image = cv2.addWeighted(teeth_whitened, (1-faceFilterFactor), image, faceFilterFactor, 0)
 	#Write image
 	cv2.imwrite('./outImages/teeth_whitening_and_face_filter.jpg', image)
 

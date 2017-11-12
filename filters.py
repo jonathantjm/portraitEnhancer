@@ -27,7 +27,9 @@ def face_filter(original_image):
 def whiten_teeth (image, whiteningFactor):
 
     #Boundary of teeth colour
-    boundaries = [([122,146,164],[214,245,255])]
+    boundaries = [
+    ([122,146,164],[214,245,255]),
+    ]
 
     #Loop through all boundaries
     for lower, upper in boundaries:
@@ -50,7 +52,6 @@ def whiten_teeth (image, whiteningFactor):
         b,g,r = cv2.split(mask)
         mask = cv2.merge((b,g,r,alpha_channel))
         alpha = 1 - whiteningFactor
-        
     
     return mask
 
