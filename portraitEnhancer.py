@@ -75,7 +75,9 @@ def main (argV = None):
 	image = face_filter(image)
 	image = cv2.addWeighted(teeth_whitened, (1-faceFilterFactor), image, faceFilterFactor, 0)
 	#Write image
-	cv2.imwrite('./outImages/%s'%imagePath, image)
+	path = "".join(("./outImages/", imagePath.split('/')[-1]))
+	print (path)
+	cv2.imwrite(path, image)
 
 
 
