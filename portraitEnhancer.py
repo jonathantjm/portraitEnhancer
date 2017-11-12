@@ -57,25 +57,25 @@ def main (argV = None):
 		image [:,:,1] = (image [:,:,1] * (1 - whiteningFactor)) + (teeth_mask[:,:,1]* whiteningFactor *teeth_mask[:,:,3]) + (image [:,:,1] * whiteningFactor) - (image [:,:,1] * whiteningFactor * teeth_mask[:,:,3])
 		image [:,:,2] = (image [:,:,2] * (1 - whiteningFactor)) + (teeth_mask[:,:,2]* whiteningFactor *teeth_mask[:,:,3]) + (image [:,:,2] * whiteningFactor) - (image [:,:,2] * whiteningFactor * teeth_mask[:,:,3])
 	
-	#Write image
-	cv2.imwrite('./outImages/teeth_whitening_only.jpg', image)
+	#Writes teeth whitened image
+	#cv2.imwrite('./outImages/teeth_whitening_only.jpg', image)
 
 	#----------------------------------------Face Filter-------------------------------------------------------------------------------
 
 	#Apply face filter
-	onlyFaceFilter = face_filter(originalImage)
+	#onlyFaceFilter = face_filter(originalImage)
 
 	#Add image based on weight
-	onlyFaceFilter = cv2.addWeighted(originalImage, (1-faceFilterFactor), onlyFaceFilter, faceFilterFactor, 0)
+	#onlyFaceFilter = cv2.addWeighted(originalImage, (1-faceFilterFactor), onlyFaceFilter, faceFilterFactor, 0)
 	#Write image
-	cv2.imwrite('./outImages/face_filter_only.jpg', onlyFaceFilter)
+	#cv2.imwrite('./outImages/face_filter_only.jpg', onlyFaceFilter)
 
 	#Add image based on weight (Face filter + teeth whitening)
 	teeth_whitened = np.copy(image)
 	image = face_filter(image)
 	image = cv2.addWeighted(teeth_whitened, (1-faceFilterFactor), image, faceFilterFactor, 0)
 	#Write image
-	cv2.imwrite('./outImages/teeth_whitening_and_face_filter.jpg', image)
+	cv2.imwrite('./outImages/%s'%imagePath, image)
 
 
 

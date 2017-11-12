@@ -21,7 +21,4 @@
 ## How to run
 In cmd, just run `python portraitEnhancer.py $$$ xx yy`, where $$$ is the name of the picture, xx is a number from 0-100 representing the intensity of **Face Filter** and yy is a number from 0-100 representing the intensity of **Teeth Whitening**
 
-After running, three images will be written to outImages folder:
-1. Image with teeth whitening
-1. Image with face filter
-1. Image with teeth whitening + face filter
+After running, the resultant image will be written to outImages folder with the same name
